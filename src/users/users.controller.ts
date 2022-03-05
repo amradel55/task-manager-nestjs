@@ -36,10 +36,14 @@ export class UsersController {
         @Body('workflow_id') workflow: Workflow
         ){
             const hashedPassword = await bcrypt.hash(password, 12);
-
-            return await this.usersService.create({name,user_name,password: hashedPassword, workflow});
+            const user = new User()
+            user.name = name;
+            user.user_name = user_name;
+            user.password = hashedPassword;
+            user.workflow = workflow;
+            return await this.usersService.create(user);
         }
 
-
+    
 
 }

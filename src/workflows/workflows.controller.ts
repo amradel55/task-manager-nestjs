@@ -10,7 +10,6 @@ export class WorkflowsController {
 
     constructor(private readonly workflowsService: WorkflowsService) {}
 
-    @UseGuards(JwtAuthGuard)
     @Post('create')
     async create(
         @Body('name') name: string,

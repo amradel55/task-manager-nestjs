@@ -7,12 +7,12 @@ import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne, ManyToMan
 export class User {
   
   @PrimaryGeneratedColumn()
-  id: number;
+  id?: number;
 
   @Column()
   name: string;
 
-  @Column()
+  @Column({unique: true})
   user_name: string;
 
  @Column({select: false})

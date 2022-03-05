@@ -1,6 +1,5 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Workflow } from 'src/workflows/workflow.entity';
 import { Repository } from 'typeorm';
 import { User } from './user.entity';
 
@@ -13,11 +12,32 @@ export class UsersService {
       ) {}
 
 
-     async create({name ,user_name, password, workflow}): Promise<any>{
-        const user = this.usersRepository.create({name, user_name, password, workflow});
-        return this.usersRepository.save(user);
+     async create(user: User): Promise<any>{
+        
+        return this.usersRepository.save(user).catch((err) => {
+          if(err.code === 'ER_DUP_ENTRY'){
+            throw new BadRequestException('this username iss not avilable')
+          }
+        });
+       
+     
       }
 
+      async update({id,name ,user_name, password, workflow}): Promise<any> {
+        let user =  await this.usersRepository.findOne(id);
+        
+        if (!user) {
+            throw new NotFoundException("The task id not found!");
+        }
+
+        user.name = name ? name : user.name;
+        user.user_name = user_name ? user_name : user.user_name;
+        user.password = password ? password : user.password;
+        user.workflow = workflow ? workflow : user.workflow;
+
+        return  this.usersRepository.save(user);
+
+    }      
       findAll(condtion: string): Promise<User[]> {
         return this.usersRepository.find({
           where: {
