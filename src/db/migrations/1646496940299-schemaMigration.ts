@@ -17,6 +17,13 @@ export class schemaMigration1646496940299 implements MigrationInterface {
         await queryRunner.query(`ALTER TABLE \`pipline\` ADD CONSTRAINT \`FK_779b0a4321a2bb619064e8b5a42\` FOREIGN KEY (\`workflowId\`) REFERENCES \`workflow\`(\`id\`) ON DELETE NO ACTION ON UPDATE NO ACTION`);
         await queryRunner.query(`INSERT INTO \`workflow\` (\`name\`) VALUES ('scaleUp')`);
         await queryRunner.query(`INSERT INTO \`user\` (\`name\`, \`user_name\`, \`password\`, \`workflowId\`) VALUES ('test', 'test', '$2b$12$Gx9DlSS6ciVqajwjXNAGW.hA7IFVpy7Mfy0HOZ1b5xxbdk/MjDAEy', '1')`);
+        await queryRunner.query(`INSERT INTO \`statge\` (\`name\`,  \`workflowId\`) VALUES ('todo', '1')`);
+        await queryRunner.query(`INSERT INTO \`statge\` (\`name\`,  \`workflowId\`) VALUES ('in progress', '1')`);
+        await queryRunner.query(`INSERT INTO \`statge\` (\`name\`,  \`workflowId\`) VALUES ('test', '1')`);
+        await queryRunner.query(`INSERT INTO \`statge\` (\`name\`,  \`workflowId\`) VALUES ('done', '1')`);
+        await queryRunner.query(`INSERT INTO \`pipline\` (\`name\`,  \`workflowId\`) VALUES ('done', '1')`);
+
+        await queryRunner.query(`INSERT INTO \`task\` (\`name\`, \`description\`, \`color\`, \`statgeId\`, \`userId\`, \`pipelineId\` ) VALUES ('task', 'some text', '#FFF', '1', '1', '1')`);
 
     }
 

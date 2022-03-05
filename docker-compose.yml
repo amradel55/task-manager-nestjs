@@ -1,34 +1,27 @@
-
-version: "3"
+version: "3.9"  # optional since v1.27.0
 services:
-  server:
-    container_name: task-manager-nest
-    image: task-manager-docker-registry/server-image
-    env_file:
-      - .env
-    depends_on:
-      - postgres
-    links:
-      - postgres
-    ports:
-      - 3000:3000
-  # separate service for run migrations while deploy
-  migration:
-    image: my-docker-registry/server-image
-    env_file:
-      - .env
-    command: './wait-for-it.sh myappname-postgres:5432 -- npm run migrations:up:prod'
-    depends_on:
-      - postgres
-  postgres:
-    # container name using like a host in other services
-    container_name: myappname-postgres
-    image: postgres:11
-    restart: always
-    # volume with database data
-    volumes:
-      - ./volumes/postgres-prod:/var/lib/postgresql/data
-    env_file:
-      - .env
-    ports:
-      - 5432:5432
+    api:
+        # image: amradel/nestjs-dockerized
+        build: 
+              dockerfile: Dockerfile
+              context: .
+        depends_on:
+              - mysql
+        enviroment:
+              DATABASE_URL: 'http://127.0.0.1:3306'
+              NODE_ENV: devlopment
+              PORT: 3000
+        ports:
+            - "8000:3000"
+    mysql:
+      image: mysql:8.0.28
+      ports: 
+          - "3306:3306"
+      enviroment:
+          MYSQL_USER: root
+          MYSQL_PASSWORD: password 
+          MYSQL_DB: taskManager_db
+        
+
+
+

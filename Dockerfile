@@ -9,7 +9,9 @@ WORKDIR /usr/src/docker-nest-sample
 # A wildcard is used to ensure both package.json AND
 # package-lock.json are copied where available (npm@5+)
 COPY package*.json ./
+
 RUN npm run migration:run
+
 RUN npm install -g npm@8.5.3
 
 RUN npm install
